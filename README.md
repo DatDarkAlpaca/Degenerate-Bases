@@ -1,9 +1,13 @@
-# Degenerate-Bases
+# Degenerate Bases
 This algorithm generates a list of possible sequences derived from a sequence containing degenerate bases.
 
-## Setup
+## 1. Setup
 
-### Cloning the Repository
+### 1.0 Prerequisites
+
+Make sure you have CMake installed on your machine. For Windows users, make sure you have defined the appropriate environment path to it.
+
+### 1.1 Cloning the Repository
 Click the `Code` button then chose your preferred method of cloning.
 
 If you want to clone it using the command line, please make sure you have Git installed and use the code bellow:
@@ -11,29 +15,27 @@ If you want to clone it using the command line, please make sure you have Git in
 > mkdir degenerate-bases & cd degenerate-bases
 > git clone https://github.com/DatDarkAlpaca/Degenerate-Bases/
 ```
-## Building
 
-Build using `make release` in the project directory, then run the executable under `build/bin`.
+## 2. Building
 
-Example:
+### 2.1 Building for Windows
 
+You can either use `CMakeGUI` or the command prompt to build the project.
+
+Upon completion, open the generated *.sln* file under the build directory. After that, right click the `degenerate-bases` project and click `Build`. The executable files will be generated at `/build/src/'Configuration'`.
+
+
+The following code is an example that you can use in the command prompt.
 ``` bash
-> make release
-> ./build/bin/degenerate
+> mkdir build
+> cmake -S . -B build
 ```
 
-There are also a few other options when using the make command:
+### 2.2 Building for Linux
 
+You can use the following code to build the project:
 ``` bash
-# Compiles the code in debug mode:
-> make debug
-
-# Compile using the build:
-> make all
-
-# Cleans the objects, dependencies and executables:
-> make clean
-
-# Displays some directory and file information:
-> make info
+> mkdir build & cd build
+> cmake ..
+> make
 ```

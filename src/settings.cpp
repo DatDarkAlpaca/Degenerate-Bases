@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Settings.h"
-#include "Data.h"
+#include "settings.h"
+#include "data.h"
 
 static vector<pair<string, string>> settingsData = {};
 

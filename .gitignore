@@ -1,2 +1,7 @@
 # Build Files:
 build
+out
+
+# VS Files:
+.vs
+CMakeSettings.json

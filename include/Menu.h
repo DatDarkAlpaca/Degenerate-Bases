@@ -1,7 +1,7 @@
 #pragma once
-#include "Settings.h"
-#include "InputModule.h"
-#include "PermutatorModule.h"
+#include "settings.h"
+#include "input.h"
+#include "permutator.h"
 
 namespace menu
 {

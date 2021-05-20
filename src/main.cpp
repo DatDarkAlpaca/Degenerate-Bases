@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "UnitHandlerModule.h"
-#include "LoggerModule.h"
-#include "Menu.h"
+#include "logger.h"
+#include "menu.h"
 
 string RetrieveInput()
 {
@@ -12,7 +11,7 @@ string RetrieveInput()
 
 		if (input.length() >= 80)
 		{
-			cout << "[!] The sequence is longer than 80 bases. This might cause writing errors." << '\n';
+			cout << "[!] The sequence is longer than 80 bases. This might take a while." << '\n';
 			cin.clear();
 			break;
 		}
@@ -54,7 +53,6 @@ int main()
 	settings::load();
 	logger::load();	
 	fasta::load();
-	unit::load();
 
 	while (true)
 	{

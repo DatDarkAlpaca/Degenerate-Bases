@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "LoggerModule.h"
+#include "logger.h"
 
 static bool existsLogFolder = false;
 
@@ -12,8 +12,6 @@ static string bool_to_string(bool x)
 void logger::load()
 {
 	existsLogFolder = logger::exists_log_folder();
-
-
 
 	if (!existsLogFolder)
 		logger::create_default();

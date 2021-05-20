@@ -1,15 +1,17 @@
 #include "pch.h"
-#include "PermutatorModule.h"
-#include "FastaModule.h"
+#include "permutator.h"
+#include "fasta.h"
 #include "monitor.h"
-#include "Menu.h"
+#include "menu.h"
 
 namespace permutator
 {
 	vector<unsigned char> cartesianResults;
 	vector<vector<unsigned char>> sets;
+
 	vector<size_t> moduli;
 	vector<int> divisions;
+
 	size_t maxSetSize = 1;
 }
 

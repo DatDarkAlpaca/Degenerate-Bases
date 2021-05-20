@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "Menu.h"
-#include "InputModule.h"
-#include "UnitHandlerModule.h"
+#include "menu.h"
+#include "input.h"
 
 vector<char> allBases = {};
 
@@ -17,7 +16,8 @@ void input::sanitize_input()
 
 void input::capitalize()
 {
-	for (char& i : program_data::input) i = toupper(i);
+	for (char& i : program_data::input)
+		i = toupper(i);
 }
 
 void input::purge_excess()
@@ -25,8 +25,9 @@ void input::purge_excess()
 	vector<char> allBases = program_data::allBases;
 	string input = program_data::input;
 
-	input.erase(remove_if(input.begin(), input.end(), [&allBases](char& c) {
-		return !(std::find(allBases.begin(), allBases.end(), c) != allBases.end());
+	input.erase(remove_if(input.begin(), input.end(), 
+		[&allBases](char& c) {
+			return !(std::find(allBases.begin(), allBases.end(), c) != allBases.end());
 		}), input.end());
 
 	if (program_data::input != input)
@@ -42,37 +43,37 @@ void input::count_bases()
 	if (!sanitized)
 		return;
 
-	for (char& i : program_data::input)
+	for (const char& i : program_data::input)
 	{
 		for (auto& a : program_data::unitList)
 		{
 			switch (a.first)
 			{
-			case 4: {
-				if (i == a.second.GetDegenerateBase())
-					program_data::quadriples++;
-				break;
-			}
-			case 3: {
-				if (i == a.second.GetDegenerateBase())
-					program_data::triples++;
-				break;
-			}
-			case 2: {
-				if (i == a.second.GetDegenerateBase())
-					program_data::doubles++;
-				break;
-			}
-			case 1: {
-				if (i == a.second.GetDegenerateBase())
-				{
-					if (i != '.' && i != '-')
-						program_data::normals++;
-					else
-						program_data::gaps++;
+				case 4: {
+					if (i == a.second.GetDegenerateBase())
+						program_data::quadriples++;
+					break;
 				}
-				break;
-			}
+				case 3: {
+					if (i == a.second.GetDegenerateBase())
+						program_data::triples++;
+					break;
+				}
+				case 2: {
+					if (i == a.second.GetDegenerateBase())
+						program_data::doubles++;
+					break;
+				}
+				case 1: {
+					if (i == a.second.GetDegenerateBase())
+					{
+						if (i != '.' && i != '-')
+							program_data::normals++;
+						else
+							program_data::gaps++;
+					}
+					break;
+				}
 			}
 		}
 	}

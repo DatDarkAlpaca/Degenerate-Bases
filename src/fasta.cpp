@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "FastaModule.h"
-#include "Data.h"
+#include "fasta.h"
+#include "data.h"
 
 bool existsResultsFolder = false;
 

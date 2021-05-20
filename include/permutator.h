@@ -1,7 +1,7 @@
 #pragma once
-#include "InputModule.h"
-#include "FastaModule.h"
-#include "Settings.h"
+#include "input.h"
+#include "fasta.h"
+#include "settings.h"
 
 namespace permutator
 {

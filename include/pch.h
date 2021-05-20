@@ -13,7 +13,6 @@
 
 #include <math.h>
 
-
 using chrono_point = std::chrono::steady_clock::time_point;
 using namespace std::chrono;
 

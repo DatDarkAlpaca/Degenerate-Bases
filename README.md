@@ -16,10 +16,6 @@ If you want to clone it using the command line, please make sure you have Git in
 > git clone https://github.com/DatDarkAlpaca/Degenerate-Bases/
 ```
 
-### 1.2 Cloning the VS Project
-Open Visual Studio and chose `Clone a Repository`, then paste this repository's location (https://github.com/DatDarkAlpaca/Degenerate-Bases).
-If you're on Folder View, click the solution to open the project. You should be able to select the `vs-project` branch and build it.
-
 ## 2. Building
 
 ### 2.1 Building for Windows

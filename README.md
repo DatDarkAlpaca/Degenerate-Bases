@@ -3,11 +3,11 @@ This algorithm generates a list of possible sequences derived from a sequence co
 
 ## 1. Setup
 
-### 1.0 Prerequisites
+### 1.0 Cloning
 
 Make sure you have CMake installed on your machine. For Windows users, make sure you have defined the appropriate environment path to it.
 
-### 1.1 Cloning the Repository
+### 1.1 Cloning the Main Repository
 Click the `Code` button then chose your preferred method of cloning.
 
 If you want to clone it using the command line, please make sure you have Git installed and use the code bellow:
@@ -15,6 +15,10 @@ If you want to clone it using the command line, please make sure you have Git in
 > mkdir degenerate-bases & cd degenerate-bases
 > git clone https://github.com/DatDarkAlpaca/Degenerate-Bases/
 ```
+
+### 1.2 Cloning the VS Project
+Open Visual Studio and chose `Clone a Repository`, then paste this repository's location (https://github.com/DatDarkAlpaca/Degenerate-Bases).
+If you're on Folder View, click the solution to open the project. You should be able to select the `vs-project` branch and build it.
 
 ## 2. Building
 

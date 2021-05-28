@@ -5,6 +5,14 @@
 
 namespace menu
 {
+	void header();
+	
+	void show_information();
+
+	void help_menu();
+
+	void base_list();
+
 	void get_input();
 
 	void debug_info();

@@ -25,7 +25,8 @@ namespace program_data
 		Unit('T', {'T'}),
 
 		Unit('.', {'.'}),
-		Unit('-', {'-'})
+		Unit('-', {'-'}),
+		Unit('*', {'*'})
 	};
 
 	// Unit Sizes:

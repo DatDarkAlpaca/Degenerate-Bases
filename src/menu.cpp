@@ -2,10 +2,58 @@
 #include "Menu.h"
 #include "Data.h"
 
-void menu::get_input()
+void menu::header()
 {
 	cout << "-= Degenerate Bases : v4.6f = -" << '\n';
 	cout << "Author: Paulo C." << '\n' << '\n';
+}
+
+void menu::show_information()
+{
+	cout << "[!] For more information, write 'help' and press Enter. If you need a list of all available bases, write 'bases'" 
+		<< '\n' << '\n';
+}
+
+void menu::help_menu()
+{
+	cout << '\n';
+
+	cout << "Please enter a sequence containing degenerate bases bellow. It can have spaces, uppercase letters and uppercase letters." << '\n';
+	cout << "If any letter on the sequence is not a valid base, the program will tell you." << '\n';
+	cout << "To list all possible bases, write 'bases' then press Enter." << '\n';
+
+	cout << '\n';
+}
+
+void menu::base_list()
+{
+	cout << '\n';
+	cout << "Listed bellow is a list of the available degenerate bases." << '\n' << '\n';
+
+	cout << "N - A, C, T, G" << '\n' << '\n';
+
+	cout << "D - A, G, T" << '\n';
+	cout << "V - A, C, G" << '\n';
+	cout << "B - C, T, G" << '\n';
+	cout << "H - A, C, T" << '\n' << '\n';
+
+	cout << "W - A, T" << '\n';
+	cout << "S - C, G" << '\n';
+	cout << "K - G, T" << '\n';
+	cout << "M - A, C" << '\n';
+	cout << "Y - C, T" << '\n';
+	cout << "R - A, G" << '\n' << '\n';
+
+	cout << "Normal Bases: A, C, G, T" << '\n' << '\n';
+
+	cout << "Gaps: -, ." << '\n';
+	cout << "Additional: *" << '\n';
+
+	cout << '\n';
+}
+
+void menu::get_input()
+{
 	cout << "Insert a sequence: ";
 }
 

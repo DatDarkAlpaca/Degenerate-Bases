@@ -2,7 +2,7 @@
 #include "logger.h"
 #include "menu.h"
 
-bool RepeatOperation()
+bool repeat_operation()
 {
 	string choice;
 	getline(cin, choice);
@@ -16,6 +16,23 @@ bool RepeatOperation()
 		return true;
 }
 
+bool parse_commands()
+{
+	auto to_lower = [](string& str) { for (char& c : str) c = std::tolower(c); return str; };
+
+	if (to_lower(program_data::input) == "help")
+	{
+		menu::help_menu();
+		return true;
+	}
+	else if (to_lower(program_data::input) == "bases" || to_lower(program_data::input) == "base")
+	{
+		menu::base_list();
+		return true;
+	}
+	else return false;
+}
+
 int main()
 {
 	std::ios_base::sync_with_stdio(false);
@@ -26,9 +43,15 @@ int main()
 
 	while (true)
 	{
+		menu::header();
+		menu::show_information();
+
 		menu::get_input();
 
 		input::retrieve_input();
+
+		if (parse_commands())
+			continue;
 
 		input::sanitize_input();
 
@@ -42,7 +65,7 @@ int main()
 
 		program_data::clear_permutator_data();
 
-		if (!RepeatOperation())
+		if (!repeat_operation())
 			break;
 	}
 	

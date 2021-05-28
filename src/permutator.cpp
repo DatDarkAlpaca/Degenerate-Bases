@@ -136,7 +136,7 @@ void permutator::lazy_permutation()
 			{
 				if (program_data::input[i] == unit.degenerateBase)
 				{
-					result += *(&unit.possibleBases[cartesian]);
+					result += unit.possibleBases[cartesian];
 					break;
 				}
 			}

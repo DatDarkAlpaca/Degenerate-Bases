@@ -97,5 +97,5 @@ The program is highly dependent on the performance of the processor's single cor
 * Using only single-generating bases will cause the program to enter the SBI (Single-Base Insertion) algorithm, which will simply "paste" the sanitized sequence (uppercase without trailing spaces) into a results file, decreasing even further the processing time;
 * The program processes 2^20 possibilities in approximately five seconds;
 * Theoretically, any sequence will be processed. However, some sequences produce massive numbers of possibilities, and thus create a enourmous results file. Those may take much longer;
-* The biggest sequence tested so far (regarding possible results) was the 13.N (NNNNNNNNNNNNN), taking 
+* The biggest sequence tested so far (regarding possible results) was the 13.N (NNNNNNNNNNNNN), taking approximately 7 minutes, and generating a 1.8GB results file.
 * The peak of memory usage identified was 7.2MB (6.7MB was the console window) after the implementation of the Lazy Cartesian Product algorithm.

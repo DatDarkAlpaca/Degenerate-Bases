@@ -4,6 +4,8 @@
 
 namespace input
 {
+	void retrieve_input();
+
 	void sanitize_input();
 
 	void capitalize();

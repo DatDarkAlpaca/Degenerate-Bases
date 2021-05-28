@@ -2,9 +2,35 @@
 #include "menu.h"
 #include "input.h"
 
-vector<char> allBases = {};
+static bool sanitized = false;
 
-bool sanitized = false;
+void input::retrieve_input()
+{
+	string input;
+	while (true)
+	{
+		getline(cin, input);
+
+		if (input.length() >= 80)
+		{
+			cout << "[!] The sequence is longer than 80 bases. This might take a while." << '\n';
+			cin.clear();
+			break;
+		}
+
+		if (input.empty())
+		{
+			cout << "The sequence is empty. Please try again." << '\n';
+			cin.clear();
+			cout << '\n';
+			menu::get_input();
+			continue;
+		}
+		else break;
+	}
+
+	program_data::input = input;
+}
 
 void input::sanitize_input()
 {
@@ -22,16 +48,17 @@ void input::capitalize()
 
 void input::purge_excess()
 {
-	vector<char> allBases = program_data::allBases;
+	const vector<char> allBases = { 'N', 'D', 'V', 'B', 'H', 'W', 'S', 'K', 'M', 'Y',
+							        'R', 'A', 'C', 'G', 'T', '.', '-' };
+
 	string input = program_data::input;
 
-	input.erase(remove_if(input.begin(), input.end(), 
-		[&allBases](char& c) {
+	input.erase(remove_if(input.begin(), input.end(), [&allBases](char& c) {
 			return !(std::find(allBases.begin(), allBases.end(), c) != allBases.end());
 		}), input.end());
 
 	if (program_data::input != input)
-		cout << "[!] One of the bases inserted is not a degenerate base. Please check your sequence for precise outcomes.\n";
+		cout << "[!] One of the bases from the sequence is not a degenerate base. Please check your sequence for precise outcomes.\n";
 
 	program_data::input = input;
 
@@ -47,25 +74,25 @@ void input::count_bases()
 	{
 		for (auto& a : program_data::unitList)
 		{
-			switch (a.first)
+			switch (a.possibleBasesSize)
 			{
 				case 4: {
-					if (i == a.second.GetDegenerateBase())
+					if (i == a.degenerateBase)
 						program_data::quadriples++;
 					break;
 				}
 				case 3: {
-					if (i == a.second.GetDegenerateBase())
+					if (i == a.degenerateBase)
 						program_data::triples++;
 					break;
 				}
 				case 2: {
-					if (i == a.second.GetDegenerateBase())
+					if (i == a.degenerateBase)
 						program_data::doubles++;
 					break;
 				}
 				case 1: {
-					if (i == a.second.GetDegenerateBase())
+					if (i == a.degenerateBase)
 					{
 						if (i != '.' && i != '-')
 							program_data::normals++;

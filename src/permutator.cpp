@@ -4,16 +4,11 @@
 #include "monitor.h"
 #include "menu.h"
 
-namespace permutator
-{
-	vector<unsigned char> cartesianResults;
-	vector<vector<unsigned char>> sets;
+static vector<vector<unsigned char>> sets;
 
-	vector<size_t> moduli;
-	vector<int> divisions;
+static vector<size_t> moduli;
 
-	size_t maxSetSize = 1;
-}
+static vector<int> divisions;
 
 static void prepare_chunks(vector<string>&& vec, size_t size, size_t inputSize)
 {
@@ -44,11 +39,11 @@ unsigned char permutator::lazy_cartesian(size_t j, size_t i)
 		throw "Invalid index. Please contact the software developer.";
 
 	vector<unsigned char> combinations;
-	combinations.reserve(maxSetSize);
+	combinations.reserve(program_data::input.size());
 
 	for (size_t r = 0; r < sets.size(); r++)
 	{
-		auto a = int(floor(j / divisions[r])) % moduli[r];
+		unsigned int a = int(floor(j / divisions[r])) % moduli[r];
 		combinations.push_back(sets[r][a]);
 	}
 
@@ -57,7 +52,7 @@ unsigned char permutator::lazy_cartesian(size_t j, size_t i)
 
 void permutator::lazy_preparation()
 {
-	size_t inputSize = program_data::get_input_size();
+	size_t inputSize = program_data::input.size();
 
 	sets.clear();
 	sets.reserve(inputSize);
@@ -65,17 +60,19 @@ void permutator::lazy_preparation()
 	for (size_t i = 0; i < inputSize; i++)
 	{
 		for (auto& unit : program_data::unitList)
-			if (program_data::input[i] == unit.second.GetDegenerateBase())
+		{
+			if (program_data::input[i] == unit.degenerateBase)
 			{
-				if (unit.first == 1)
+				if (unit.possibleBasesSize == 1)
 					sets.push_back({ 0 });
-				else if (unit.first == 2)
+				else if (unit.possibleBasesSize == 2)
 					sets.push_back({ 0, 1 });
-				else if (unit.first == 3)
+				else if (unit.possibleBasesSize == 3)
 					sets.push_back({ 0, 1, 2 });
-				else if (unit.first == 4)
+				else if (unit.possibleBasesSize == 4)
 					sets.push_back({ 0, 1, 2, 3 });
 			}
+		}
 	}
 
 	size_t setsSize = sets.size();
@@ -109,16 +106,16 @@ void permutator::simple_base_insertion()
 
 void permutator::lazy_permutation()
 {
+	// SBI:
 	if (!program_data::any_degenerate_bases())
-	{
-		simple_base_insertion();
-		return;
-	}
+		return simple_base_insertion();
 
+	// Preparation:
 	lazy_preparation();
 
+	// Chunk Creation:
 	vector<string> chunkResults = {};
-	prepare_chunks(std::move(chunkResults), program_data::chunkSize, program_data::get_input_size());
+	prepare_chunks(std::move(chunkResults), program_data::chunkSize, program_data::input.size());
 
 	if (program_data::writeDebug)
 		menu::write_chunk_size();
@@ -126,19 +123,20 @@ void permutator::lazy_permutation()
 	ofstream fastaOut;
 	fasta::open_file(std::move(fastaOut));
 
+	// Degenerate Bases Main Algorithm:
 	string result;
 	size_t chunksWritten = 1;
 	for (size_t j = 0; j < program_data::get_lazy_cartesian_size(); ++j)
 	{
-		for (size_t i = 0; i < program_data::get_input_size(); ++i)
+		for (size_t i = 0; i < program_data::input.size(); ++i)
 		{
 			auto cartesian = lazy_cartesian(j, i);
 
 			for (auto& unit : program_data::unitList)
 			{
-				if (program_data::input[i] == unit.second.GetDegenerateBase())
+				if (program_data::input[i] == unit.degenerateBase)
 				{
-					result += *(&unit.second.GetPossibleBases()[cartesian]);
+					result += *(&unit.possibleBases[cartesian]);
 					break;
 				}
 			}

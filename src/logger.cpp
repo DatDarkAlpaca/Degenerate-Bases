@@ -2,6 +2,7 @@
 #include "logger.h"
 
 static bool existsLogFolder = false;
+static size_t logIndex;
 
 static string bool_to_string(bool x)
 {
@@ -24,7 +25,7 @@ void logger::log_data()
 	if (!program_data::enableLogging) return;
 
 	string path = program_data::logsFolder;
-	string data = program_data::logPrefix + std::to_string(program_data::logIndex);
+	string data = program_data::logPrefix + std::to_string(logIndex);
 	string suf = ".txt";
 
 	ofstream file(path + data + suf);
@@ -63,11 +64,11 @@ void logger::log_data()
 	file << '\n';
 
 	file << "-= Benchmark Data =- " << '\n';
-	file << "• Writing Time : " << program_data::writeDebug << "ms\n";
-	file << "• Total Time   : " << program_data::permutationTime << "ms";
+	file << "• Permutation Time   : " << program_data::permutationTime << "ms\n";
+	file << "• Writing Time       : " << program_data::writeFastaTime << "ms\n";
 
 	file.close();
-	program_data::logIndex++;
+	logIndex++;
 }
 
 bool logger::exists_log_folder()
@@ -90,6 +91,6 @@ void logger::check_last_fileName()
 	for (auto& entry : fs::directory_iterator(path))
 		logFiles.push_back(entry.path().filename().string());
 
-	program_data::logIndex = logFiles.size();
+	logIndex = logFiles.size();
 }
 

@@ -4,34 +4,29 @@
 namespace program_data
 {
 	// Units:
-	vector<pair<int, Unit>> unitList = {
-		{ 4, Unit('N', {'A', 'C', 'T', 'G'}) },
+	vector<Unit> unitList = { 
+		Unit('N', {'A', 'C', 'T', 'G'}),
 
-		{ 3, Unit('D', {'A', 'G', 'T'}) },
-		{ 3, Unit('V', {'A', 'C', 'G'}) },
-		{ 3, Unit('B', {'C', 'G', 'T'}) },
-		{ 3, Unit('H', {'A', 'C', 'T'}) },
+		Unit('D', {'A', 'G', 'T'}),
+		Unit('V', {'A', 'C', 'G'}),
+		Unit('B', {'C', 'G', 'T'}),
+		Unit('H', {'A', 'C', 'T'}),
 
-		{ 2, Unit('W', {'A', 'T'}) },
-		{ 2, Unit('S', {'C', 'G'}) },
-		{ 2, Unit('K', {'G', 'T'}) },
-		{ 2, Unit('M', {'A', 'C'}) },
-		{ 2, Unit('Y', {'C', 'T'}) },
-		{ 2, Unit('R', {'A', 'G'}) },
+		Unit('W', {'A', 'T'}),
+		Unit('S', {'C', 'G'}),
+		Unit('K', {'G', 'T'}),
+		Unit('M', {'A', 'C'}),
+		Unit('Y', {'C', 'T'}),
+		Unit('R', {'A', 'G'}),
 
-		{ 1, Unit('A', {'A'}) },
-		{ 1, Unit('C', {'C'}) },
-		{ 1, Unit('G', {'G'}) },
-		{ 1, Unit('T', {'T'}) },
+		Unit('A', {'A'}),
+		Unit('C', {'C'}),
+		Unit('G', {'G'}),
+		Unit('T', {'T'}),
 
-		{ 1, Unit('.', {'.'}) },
-		{ 1, Unit('-', {'-'}) },
+		Unit('.', {'.'}),
+		Unit('-', {'-'})
 	};
-	vector<char> allBases = {
-		'N', 'D', 'V', 'B', 'H',
-		'W', 'S', 'K', 'M', 'Y',
-		'R', 'A', 'C', 'G', 'T',
-		'.', '-' };
 
 	// Unit Sizes:
 	size_t doubles, triples, quadriples, normals, gaps;
@@ -39,9 +34,8 @@ namespace program_data
 	// Chunk Size:
 	size_t chunkSize;
 
-	// Warning Sizes:
+	// Warning Size:
 	const size_t warningCartesianSize = 16777216;
-	const size_t errorCartesianSize = 268435456;
 
 	// Execution Time:
 	long long permutationTime, writeFastaTime;
@@ -69,7 +63,7 @@ namespace program_data
 	string input = "";
 }
 
-// Size Methods:
+// Size Method?
 size_t program_data::get_lazy_cartesian_size() 
 {
 	size_t size = 1;
@@ -79,11 +73,6 @@ size_t program_data::get_lazy_cartesian_size()
 	if (doubles > 0)	size *= (size_t)pow(2, doubles);
 
 	return size;
-}
-
-size_t program_data::get_input_size()
-{
-	return input.size();
 }
 
 // Helpers:

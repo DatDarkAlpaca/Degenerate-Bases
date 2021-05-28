@@ -55,6 +55,6 @@ void menu::unmatched_bases_errors()
 
 void menu::cartesian_size_warning()
 {
-	cout << "[!] The sequence input will result in a considerable amount of outcomes." << '\n';
-	cout << "It may take a long time to computeand will generate a massive file." << '\n';
+	cout << "[!] The following sequence will result in a considerable amount of outcomes." << '\n';
+	cout << "It may take a long time to compute this sequence, and it will generate a massive file." << '\n';
 }

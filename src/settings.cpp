@@ -24,7 +24,7 @@ void settings::create_default()
 	ofstream settings("./bin/settings.ini");
 
 	settings << "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #" << '\n';
-	settings << "# Degenerates Bases. 2020 -  v4.6f  #" << '\n';
+	settings << "# Degenerates Bases. 2020 -  v4.5f  #" << '\n';
 	settings << "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #" << '\n';
 
 	settings << '\n';

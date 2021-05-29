@@ -49,7 +49,7 @@ void input::capitalize()
 void input::purge_excess()
 {
 	const vector<char> allBases = { 'N', 'D', 'V', 'B', 'H', 'W', 'S', 'K', 'M', 'Y',
-							        'R', 'A', 'C', 'G', 'T', '.', '-' };
+							        'R', 'A', 'C', 'G', 'T', '.', '-', '*' };
 
 	string input = program_data::input;
 

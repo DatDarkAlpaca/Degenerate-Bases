@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\data.cpp">
+      <Filter>Application\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\app.cpp">
+      <Filter>GUI\App</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\main_frame.cpp">
+      <Filter>GUI\MainFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\virtual_list.cpp">
+      <Filter>GUI\VirtualList</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\input.cpp">
+      <Filter>Application\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\permutator\permutator.cpp">
+      <Filter>Application\Permutator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\settings\settings.cpp">
+      <Filter>Application\Settings</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\pch.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data.h">
+      <Filter>Application\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fasta\fasta.h">
+      <Filter>Application\Fasta</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fasta\chunk.h">
+      <Filter>Application\Fasta</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\app.h">
+      <Filter>GUI\App</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\main_frame.h">
+      <Filter>GUI\MainFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\virtual_list.h">
+      <Filter>GUI\VirtualList</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\input.h">
+      <Filter>Application\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\permutator\permutator.h">
+      <Filter>Application\Permutator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\settings\settings.h">
+      <Filter>Application\Settings</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Application">
+      <UniqueIdentifier>{2d1ea2aa-f024-4cde-8c49-b684ebbd3c52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Data">
+      <UniqueIdentifier>{c4344502-fdc8-4dc7-81d2-a26bb8b54265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{ba658b87-099c-4c80-9a5f-46334f1a7dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\App">
+      <UniqueIdentifier>{03a497f4-87e7-4094-bdc1-12d5c98982e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\MainFrame">
+      <UniqueIdentifier>{d883eed5-c7f3-4162-8344-6da72f01413c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\VirtualList">
+      <UniqueIdentifier>{ab38b007-f743-4cad-908a-aa9c3da5d7f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Fasta">
+      <UniqueIdentifier>{34061fd6-dcb7-4b60-9932-9c53a9cb84aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Settings">
+      <UniqueIdentifier>{620c3734-682d-4b83-a2ed-e62c7f403c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Input">
+      <UniqueIdentifier>{a2872ac4-0124-43c7-9535-d12860558f7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Permutator">
+      <UniqueIdentifier>{51c212b6-2e6e-41ea-94e5-9ce8ebdc02b5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.gitignore" />
+  </ItemGroup>
+</Project>

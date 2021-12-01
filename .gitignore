@@ -7,6 +7,9 @@
 *.o
 *.obj
 
+# Visual Studio:
+.vs
+
 # Precompiled Headers
 *.gch
 *.pch

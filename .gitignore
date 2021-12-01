@@ -8,7 +8,16 @@
 *.obj
 
 # Visual Studio:
+bin
+intermediate
 .vs
+
+# Settings:
+*.ini
+
+# wxWidgets:
+**/wxWidgets/include
+**/wxWidgets/lib
 
 # Precompiled Headers
 *.gch

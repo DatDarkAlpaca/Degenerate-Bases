@@ -35,5 +35,8 @@ namespace dgn
 	private:
 		wxTextCtrl* m_Input;
 		VirtualList* m_ResultsList;
+
+	private:
+		std::vector<std::thread> m_BasesThreads;
 	};
 }

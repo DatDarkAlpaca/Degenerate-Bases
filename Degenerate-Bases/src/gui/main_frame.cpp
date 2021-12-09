@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "data.h"
 #include "main_frame.h"
+#include "../SRWA/SRWA.h"
 #include "../input/input.h"
 #include "../permutator/permutator.h"
-#include "../fasta/chunk.h"
 
 dgn::MainFrame::MainFrame()
 	: wxFrame(nullptr, wxID_ANY, "Degenerate Bases v5.0", wxDefaultPosition, wxSize(600, 400))
@@ -89,13 +89,10 @@ void dgn::MainFrame::ButtonGenerate(wxCommandEvent& event)
 
 	InputHandler::SanitizeInput();
 
-	Permutator::Execute();
-
-	for (const auto& element : Chunk::data)
-		m_ResultsList->AddItem(0, element, true);
-
-	Chunk::Clear();
+	// SRWA:
+	SRWA::Open("result");
+	
+	SRWA::Close();
 
 	Data::Clear();
 }
-

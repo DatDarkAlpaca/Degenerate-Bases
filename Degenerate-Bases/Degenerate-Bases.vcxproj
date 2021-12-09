@@ -196,8 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\data.h" />
-    <ClInclude Include="src\fasta\chunk.h" />
-    <ClInclude Include="src\fasta\fasta.h" />
+    <ClInclude Include="src\SRWA\SRWA.h" />
     <ClInclude Include="src\gui\app.h" />
     <ClInclude Include="src\gui\main_frame.h" />
     <ClInclude Include="src\gui\virtual_list.h" />

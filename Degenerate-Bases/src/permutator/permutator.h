@@ -4,17 +4,19 @@ namespace dgn
 {
 	class Permutator
 	{
+	private:
+		typedef uint_least32_t least;
+		typedef const std::vector<std::function<void(const std::string&)>> writters;
+
 	public:
-		static void Execute();
+		static void LazyPermutation(least min, least max, writters writterFunctions);
 
 	private:
-		static unsigned char LazyCartesian(size_t j, size_t i);
+		static unsigned char LazyCartesian(least j, least i);
 
-		static void SimpleBaseInsertion();
+		static void SimpleBaseInsertion(writters&& writterFunctions);
 
 		static void Preparation();
-
-		static void LazyPermutation();
 
 	private:
 		static inline std::vector<std::vector<unsigned char>> s_Sets = {};

@@ -34,10 +34,7 @@
     <ClInclude Include="src\data.h">
       <Filter>Application\Data</Filter>
     </ClInclude>
-    <ClInclude Include="src\fasta\fasta.h">
-      <Filter>Application\Fasta</Filter>
-    </ClInclude>
-    <ClInclude Include="src\fasta\chunk.h">
+    <ClInclude Include="src\SRWA\SRWA.h">
       <Filter>Application\Fasta</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\app.h">

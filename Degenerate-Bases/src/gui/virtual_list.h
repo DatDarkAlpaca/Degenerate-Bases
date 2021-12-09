@@ -60,12 +60,9 @@ namespace dgn
             RefreshAfterUpdate();
         }
 
-        void AddItem(size_t id, const std::string& result, bool append = false)
+        void AddItem(const std::string& result)
         {
-            if(append)
-                m_Items.push_back(ResultData(GetItemCount(), result));
-            else
-                m_Items.push_back(ResultData(id, result));
+            m_Items.push_back(ResultData(GetItemCount(), result));
 
             RefreshAfterUpdate();
         }

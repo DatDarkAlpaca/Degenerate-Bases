@@ -10,6 +10,9 @@ namespace dgn
 		{
 			for (auto& base : baseSizes)
 				base.second = 0;
+
+			iterations = 0;
+			outcomes = 0;
 		}
 
 	public:
@@ -23,6 +26,6 @@ namespace dgn
 		static inline bool invalidSequence = false;
 		static inline bool anyDegenerate = false;
 
-		static inline size_t iterations = 0, outcomes = 0;
+		static inline std::atomic<uint32_t> iterations{ 0 }, outcomes{ 0 };
 	};
 }

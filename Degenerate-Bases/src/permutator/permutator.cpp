@@ -1,20 +1,6 @@
 #include "pch.h"
 #include "permutator.h"
-
 #include "../data.h"
-#include "../fasta/chunk.h"
-#include "../fasta/fasta.h"
-
-void dgn::Permutator::Execute()
-{
-	// SBI:
-	if (!Data::anyDegenerate)
-		return SimpleBaseInsertion();
-
-	Preparation();
-
-	LazyPermutation();
-}
 
 void dgn::Permutator::Preparation()
 {
@@ -68,12 +54,12 @@ void dgn::Permutator::Preparation()
 	}
 }
 
-unsigned char dgn::Permutator::LazyCartesian(size_t j, size_t i)
+unsigned char dgn::Permutator::LazyCartesian(least j, least i)
 {
 	if ((size_t)j >= Data::cartesianSize)
 	{
+		// Todo: error.
 		return 0;
-		// Todo: show an error.
 	}
 
 	std::vector<unsigned char> combinations;
@@ -88,22 +74,26 @@ unsigned char dgn::Permutator::LazyCartesian(size_t j, size_t i)
 	return combinations[i];
 }
 
-void dgn::Permutator::SimpleBaseInsertion()
+void dgn::Permutator::SimpleBaseInsertion(writters&& writterFunctions)
 {
-	// Write to fasta if enabled.
-	// Add to the results list.
-	// Write to the history list.
+	for (const auto& writter : writterFunctions)
+		writter(Data::sequence);
 }
 
-void dgn::Permutator::LazyPermutation()
+void dgn::Permutator::LazyPermutation(least min, least max, writters writterFunctions)
 {
-	// Todo: Set capacity.
+	// SBI:
+	if (!Data::anyDegenerate)
+		return SimpleBaseInsertion(std::move(writterFunctions));
+
+	// Lazy algorithm preparation:
+	Preparation();
+
+	// Reserving the result string:
 	std::string result;
 	result.reserve(Data::sequence.size());
 
-	Fasta::Open("");
-
-	for (size_t j = 0; j < Data::cartesianSize; ++j)
+	for (size_t j = min; j < max; ++j)
 	{
 		for (size_t i = 0; i < Data::sequence.size(); ++i)
 		{
@@ -121,20 +111,12 @@ void dgn::Permutator::LazyPermutation()
 			Data::iterations++;
 		}
 
-		Chunk::Insert(result);
-		
-		{
-			// Todo: if full
-			// Fasta::Write(Chunk::data);
-			// Save to fasta.
-			// Add results to list like a generator.
-			// Chunk::Empty();
-		}
+		// Writting:
+		for (const auto& writter : writterFunctions)
+			writter(result);
 
 		result.clear();
 
 		Data::outcomes++;
 	}
-
-	Fasta::Close();
 }

@@ -6,6 +6,8 @@ This project was developed to analyze oligonucleotide sequences containing
 degenerate bases and generate a file with all possible outcomes with non-degenerate
 bases considering the conversion of degenerate bases into conventional bases.
 
+If you're looking for the NoGUI version ( 4.6f ), visit the [legacy repository](https://github.com/DatDarkAlpaca/Degenerate-Bases-NoGUI).
+
 ## Getting Started
 
 These instructions are aimed towards getting you a copy of the project up and running on your local

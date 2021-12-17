@@ -35,5 +35,7 @@ namespace dgn
 
 		static inline std::atomic<long long> writeFastaTime, permutationTime;
 		static inline std::atomic<uint32_t> iterations{ 0 }, outcomes{ 0 };
+		
+		static inline uint32_t warningCartesianSize = 2 << 22;
 	};
 }

@@ -21,11 +21,11 @@ namespace dgn
         VirtualList(wxWindow* parent, const wxWindowID id, const wxPoint& pos, const wxSize& size, long style = 5L)
             : wxListCtrl(parent, id, pos, size, style)
         {
-            this->AppendColumn("ID");
-            this->AppendColumn("Sequence");
+            AppendColumn("ID");
+            AppendColumn("Sequence");
 
-            this->SetColumnWidth(0, 80);
-            this->SetColumnWidth(1, 600);
+            SetColumnWidth(0, 80);
+            SetColumnWidth(1, 400);
         }
 
     public:

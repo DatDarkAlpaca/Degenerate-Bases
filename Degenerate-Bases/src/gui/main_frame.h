@@ -28,14 +28,18 @@ namespace dgn
 
 		void CreateVirtualList();
 
-		void DisplayInformation();
-
 		void ModifyGenerateButton();
+
+		void FixListCtrl(wxSizeEvent& event);
+
+		void FixListCtrlSash(wxSplitterEvent& event);
 
 	private:
 		void AddInformation(std::string&& name, std::string&& value, bool isWarning = false, bool isError = false);
 
 		void SetInformation(std::string&& name, std::string&& value, bool isWarning = false, bool isError = false);
+
+		void DisplayInformation();
 
 	private:
 		void ButtonGenerate(wxCommandEvent& event);

@@ -6,16 +6,22 @@ dgn::DegenerateBaseFrame::DegenerateBaseFrame(wxWindow* parent, wxWindowID id, c
 {
 	SetLabel(title);
 
-	PrepareMenu();
+	// PrepareMenu();
 
 	CreateVirtualList();
 	ModifyGenerateButton();
 
 	Layout();
+
+	// Prepare another function:
+	Bind(wxEVT_SIZE, &DegenerateBaseFrame::FixListCtrl, this, wxID_ANY);
+	Bind(wxEVT_SPLITTER_SASH_POS_CHANGED, &DegenerateBaseFrame::FixListCtrlSash, this, wxID_ANY);
 }
 
 void dgn::DegenerateBaseFrame::PrepareMenu()
 {
+	// Todo: create functions.
+
 	wxMenu* menuFile = new wxMenu;
 
 	// File Menu:
@@ -55,8 +61,12 @@ void dgn::DegenerateBaseFrame::CreateVirtualList()
 void dgn::DegenerateBaseFrame::DisplayInformation()
 {
 	generationResultsTable->ClearAll();
+
 	generationResultsTable->InsertColumn(0, _("Property"));
 	generationResultsTable->InsertColumn(1, _("Value"));
+
+	wxSizeEvent e;
+	FixListCtrl(e);
 
 	AddInformation("Writing time", std::to_string(Data::writeFastaTime) + "ms");
 
@@ -68,7 +78,8 @@ void dgn::DegenerateBaseFrame::DisplayInformation()
 
 	AddInformation("Sequence's length:", std::to_string(Data::sequence.size()));
 
-	// Todo: unmatched bases error.
+	if (Data::cartesianSize != Data::outcomes)
+		AddInformation("Unmatched Bases Error!", "The results from this permutation may be imprecise.", false, true);
 }
 
 void dgn::DegenerateBaseFrame::ModifyGenerateButton()
@@ -77,16 +88,44 @@ void dgn::DegenerateBaseFrame::ModifyGenerateButton()
 	Bind(wxEVT_BUTTON, &DegenerateBaseFrame::ButtonGenerate, this, ID_INPUT_BTN);
 }
 
+void dgn::DegenerateBaseFrame::FixListCtrl(wxSizeEvent& event)
+{
+	if (!m_ResultListCtrl || m_ResultListCtrl->GetColumnCount() == 0)
+		return;
+
+	if (!generationResultsTable || generationResultsTable->GetColumnCount() == 0)
+		return;
+	
+	m_ResultListCtrl->SetColumnWidth(1, listPanel->GetSize().GetWidth() - m_ResultListCtrl->GetColumnWidth(0));
+	generationResultsTable->SetColumnWidth(1, resultsPanel->GetSize().GetWidth() - generationResultsTable->GetColumnWidth(0));
+
+	event.Skip();
+}
+
+void dgn::DegenerateBaseFrame::FixListCtrlSash(wxSplitterEvent& event)
+{
+	if (!m_ResultListCtrl || m_ResultListCtrl->GetColumnCount() == 0)
+		return;
+
+	if (!generationResultsTable || generationResultsTable->GetColumnCount() == 0)
+		return;
+
+	m_ResultListCtrl->SetColumnWidth(1, listPanel->GetSize().GetWidth() - m_ResultListCtrl->GetColumnWidth(0));
+	generationResultsTable->SetColumnWidth(1, resultsPanel->GetSize().GetWidth() - generationResultsTable->GetColumnWidth(0));
+
+	event.Skip();
+}
+
 void dgn::DegenerateBaseFrame::AddInformation(std::string&& name, std::string&& value, bool isWarning, bool isError)
 {
 	long index = generationResultsTable->InsertItem(0, name);
 	generationResultsTable->SetItem(index, 1, value);
 
 	// Todo: change these colors.
-	if (isWarning)
+	if (isError)
 		generationResultsTable->SetItemBackgroundColour(index, wxColour(210, 51, 51));
 
-	if(isError)
+	if(isWarning)
 		generationResultsTable->SetItemBackgroundColour(index, wxColour(210, 210, 51));
 }
 
@@ -96,14 +135,17 @@ void dgn::DegenerateBaseFrame::SetInformation(std::string&& name, std::string&& 
 	generationResultsTable->InsertColumn(0, _("Property"));
 	generationResultsTable->InsertColumn(1, _("Value"));
 
+	wxSizeEvent e;
+	FixListCtrl(e);
+
 	long index = generationResultsTable->InsertItem(0, name);
 	generationResultsTable->SetItem(index, 1, value);
 
 	// Todo: change these colors.
-	if (isWarning)
+	if (isError)
 		generationResultsTable->SetItemBackgroundColour(index, wxColour(210, 51, 51));
 
-	if (isError)
+	if (isWarning)
 		generationResultsTable->SetItemBackgroundColour(index, wxColour(210, 210, 51));
 }
 
@@ -123,6 +165,9 @@ void dgn::DegenerateBaseFrame::ButtonGenerate(wxCommandEvent& event)
 		SetInformation("Invalid Sequence", "The input sequence is invalid.", true, false);
 		return;
 	}
+
+	if (Data::cartesianSize > Data::warningCartesianSize)
+		SetInformation("Large Output", "It may take a long time to compute this sequence.", true, false);
 
 	// SBI:
 	if (!Data::anyDegenerate)

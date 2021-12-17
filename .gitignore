@@ -7,6 +7,15 @@
 *.o
 *.obj
 
+# Cache files:
+__pycache__/
+
+# Backup files:
+*.bak
+
+# Results:
+results/
+
 # Visual Studio:
 bin
 intermediate

@@ -1,4 +1,5 @@
 #pragma once
+#include "../data.h"
 
 namespace dgn
 {
@@ -9,14 +10,14 @@ namespace dgn
 		typedef const std::vector<std::function<void(const std::string&)>> writters;
 
 	public:
-		static void LazyPermutation(least min, least max, writters writterFunctions);
+		static void LazyPermutation(least min = 0, least max = Data::cartesianSize);
+
+		static void SimpleBaseInsertion();
+
+		static void Preparation();
 
 	private:
 		static unsigned char LazyCartesian(least j, least i);
-
-		static void SimpleBaseInsertion(writters&& writterFunctions);
-
-		static void Preparation();
 
 	private:
 		static inline std::vector<std::vector<unsigned char>> s_Sets = {};

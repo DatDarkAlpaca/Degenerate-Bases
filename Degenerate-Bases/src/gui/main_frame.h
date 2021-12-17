@@ -1,42 +1,46 @@
 #pragma once
 #include "pch.h"
+
+#include "compiled/main_frame/degenerate_ui.h"
 #include "virtual_list.h"
+
+#include "../permutator/permutator.h"
+#include "../input/input.h"
+#include "../SRWA/SRWA.h"
+#include "../data.h"
 
 namespace dgn
 {
 	namespace
 	{
-		enum
-		{
-			ID_NEW = 1,
-			ID_OPEN,
-			ID_SAVE
-		};
+		enum { ID_NEW = 1, ID_OPEN, ID_SAVE };
 
-		enum
-		{
-			ID_INPUT_BTN = wxID_HIGHEST + 1
-		};
+		enum { ID_INPUT_BTN = wxID_HIGHEST + 1 };
 	}
 
-	class MainFrame : public wxFrame
+	class DegenerateBaseFrame : public MainFrame
 	{
 	public:
-		MainFrame();
+		DegenerateBaseFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_FRAME_STYLE);
 
 	private:
 		void PrepareMenu();
 
-		void PrepareInput();
+		void CreateVirtualList();
+
+		void DisplayInformation();
+
+		void ModifyGenerateButton();
+
+	private:
+		void AddInformation(std::string&& name, std::string&& value, bool isWarning = false, bool isError = false);
+
+		void SetInformation(std::string&& name, std::string&& value, bool isWarning = false, bool isError = false);
 
 	private:
 		void ButtonGenerate(wxCommandEvent& event);
 
 	private:
-		wxTextCtrl* m_Input;
-		VirtualList* m_ResultsList;
-
-	private:
-		std::vector<std::thread> m_BasesThreads;
+		VirtualList* m_ResultListCtrl;
 	};
 }

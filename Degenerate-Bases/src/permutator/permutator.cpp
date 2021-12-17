@@ -1,6 +1,21 @@
 #include "pch.h"
 #include "permutator.h"
 #include "../data.h"
+#include "../SRWA/SRWA.h"
+
+namespace
+{
+	inline void WriteTimed(const std::string& data)
+	{
+		using namespace dgn;
+
+		high_resolution_clock::time_point begin = high_resolution_clock::now();
+		SRWA::Write(data);
+		high_resolution_clock::time_point end = high_resolution_clock::now();
+		
+		Data::writeFastaTime += duration_cast<nanoseconds>(end - begin).count() / 1000000;
+	}
+}
 
 void dgn::Permutator::Preparation()
 {
@@ -74,21 +89,25 @@ unsigned char dgn::Permutator::LazyCartesian(least j, least i)
 	return combinations[i];
 }
 
-void dgn::Permutator::SimpleBaseInsertion(writters&& writterFunctions)
+void dgn::Permutator::SimpleBaseInsertion()
 {
-	for (const auto& writter : writterFunctions)
-		writter(Data::sequence);
+	auto dir = Settings::Get("results", "directory")
+			 + Settings::Get("results", "prefix")
+			 + std::to_string(Settings::CountFiles()) 
+			 + "."
+			 + Settings::Get("results", "format");
+			 
+	SRWA::Open(dir);
+
+	SRWA::Write(Data::sequence);
+	
+	SRWA::Close();
+
+	Data::outcomes = 1;
 }
 
-void dgn::Permutator::LazyPermutation(least min, least max, writters writterFunctions)
+void dgn::Permutator::LazyPermutation(least min, least max)
 {
-	// SBI:
-	if (!Data::anyDegenerate)
-		return SimpleBaseInsertion(std::move(writterFunctions));
-
-	// Lazy algorithm preparation:
-	Preparation();
-
 	// Reserving the result string:
 	std::string result;
 	result.reserve(Data::sequence.size());
@@ -111,9 +130,7 @@ void dgn::Permutator::LazyPermutation(least min, least max, writters writterFunc
 			Data::iterations++;
 		}
 
-		// Writting:
-		for (const auto& writter : writterFunctions)
-			writter(result);
+		WriteTimed(result);
 
 		result.clear();
 

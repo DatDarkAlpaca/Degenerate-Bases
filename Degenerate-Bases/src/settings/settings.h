@@ -2,22 +2,23 @@
 
 namespace dgn
 {
-	// Todo: test the wxConfig option instead.
-	class SettingsHandler
+	class Settings
 	{
 	public:
-		static const std::string& Get(std::string&& section, std::string&& key);
+		static const std::string Get(std::string&& section, std::string&& key);
 
 	public:
 		static void CreateDefault();
 
 		static void ReadSettings();
 
+		static size_t CountFiles();
+
 	private:
 		static bool ExistsSettings();
 
 	private:
-		static const std::string s_SettingsPath;
-		static mINI::INIStructure s_Structure;
+		static inline const std::string s_SettingsPath = "./settings.ini";
+		static inline mINI::INIStructure s_Structure;
 	};
 }

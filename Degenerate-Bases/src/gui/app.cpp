@@ -1,20 +1,19 @@
 #include "pch.h"
 #include "App.h"
-#include "main_frame.h"
 #include "../SRWA/SRWA.h"
+#include "../gui/main_frame.h"
 #include "../settings/settings.h"
 
 bool dgn::App::OnInit()
 {
 	using namespace dgn;
 
-	SettingsHandler::CreateDefault();
-	SettingsHandler::ReadSettings();
+	Settings::CreateDefault();
+	Settings::ReadSettings();
 
-	SRWA::Configure(SettingsHandler::Get("fasta", "header_character").c_str()[0], 
-		            SettingsHandler::Get("fasta", "header_template"));
-
-	MainFrame* frame = new MainFrame;
+	DegenerateBaseFrame* frame = new DegenerateBaseFrame(nullptr, wxID_ANY, "Degenerate Bases v5.0");
+	SetTopWindow(frame);
 	frame->Show(true);
+
 	return true;
 }

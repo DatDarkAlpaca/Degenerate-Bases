@@ -8,6 +8,7 @@ namespace dgn
         struct ResultData
         {
             ResultData(size_t id, std::string result) : id(id), result(result) { }
+            ResultData() = default;
 
             size_t id;
             std::string result;
@@ -17,12 +18,21 @@ namespace dgn
     class VirtualList : public wxListCtrl
     {
     public:
-        VirtualList(wxWindow* parent, const wxWindowID id, const wxPoint& pos, const wxSize& size);
+        VirtualList(wxWindow* parent, const wxWindowID id, const wxPoint& pos, const wxSize& size, long style = 5L)
+            : wxListCtrl(parent, id, pos, size, style)
+        {
+            this->AppendColumn("ID");
+            this->AppendColumn("Sequence");
 
+            this->SetColumnWidth(0, 80);
+            this->SetColumnWidth(1, 600);
+        }
+
+    public:
         virtual wxString OnGetItemText(long index, long column) const wxOVERRIDE
         {
             ResultData item = m_Items[index];
-
+            
             switch (column)
             {
             case 0:
@@ -52,10 +62,20 @@ namespace dgn
             RefreshAfterUpdate();
         }
 
-        void AddItems(std::vector<ResultData>&& data, bool append = false)
+        void SetItems(const std::vector<std::string>& data)
+        {
+            std::vector<ResultData> resultData;
+            for (uint_least16_t i = 0; i < data.size(); ++i)
+                resultData.push_back(ResultData(i, data[i]));
+
+            m_Items = resultData;
+            RefreshAfterUpdate();
+        }
+
+        void AddItems(const std::vector<std::string>& data)
         {
             for (const auto& element : data)
-                m_Items.push_back(element);
+                m_Items.push_back(ResultData(GetItemCount(), element));
 
             RefreshAfterUpdate();
         }

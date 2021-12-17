@@ -171,10 +171,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\gui\main_frame.cpp" />
     <ClCompile Include="src\data.cpp" />
     <ClCompile Include="src\gui\app.cpp" />
-    <ClCompile Include="src\gui\main_frame.cpp" />
-    <ClCompile Include="src\gui\virtual_list.cpp" />
+    <ClCompile Include="src\gui\compiled\main_frame\degenerate_ui.cpp" />
     <ClCompile Include="src\input\input.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pch.cpp">
@@ -195,10 +195,11 @@
     <ClCompile Include="src\settings\settings.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\gui\main_frame.h" />
     <ClInclude Include="src\data.h" />
+    <ClInclude Include="src\gui\compiled\main_frame\degenerate_ui.h" />
     <ClInclude Include="src\SRWA\SRWA.h" />
     <ClInclude Include="src\gui\app.h" />
-    <ClInclude Include="src\gui\main_frame.h" />
     <ClInclude Include="src\gui\virtual_list.h" />
     <ClInclude Include="src\input\input.h" />
     <ClInclude Include="src\pch.h" />

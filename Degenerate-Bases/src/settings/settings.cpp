@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "settings.h"
 
-const std::string& dgn::SettingsHandler::Get(std::string&& section, std::string&& key)
+const std::string dgn::Settings::Get(std::string&& section, std::string&& key)
 {
-	if (SettingsHandler::s_Structure.has(section))
+	if (s_Structure.has(section))
 	{
-		auto& collection = SettingsHandler::s_Structure[section];
+		auto& collection = s_Structure[section];
 		if (collection.has(key))
 			return collection[key];
 	}
@@ -13,12 +13,12 @@ const std::string& dgn::SettingsHandler::Get(std::string&& section, std::string&
 	return std::string();
 }
 
-void dgn::SettingsHandler::CreateDefault()
+void dgn::Settings::CreateDefault()
 {
-	if (SettingsHandler::ExistsSettings())
+	if (ExistsSettings())
 		return;
 
-	mINI::INIFile iniFile(SettingsHandler::s_SettingsPath);
+	mINI::INIFile iniFile(s_SettingsPath);
 	mINI::INIStructure iniStruct;
 
 	iniStruct["fasta"].set({
@@ -50,19 +50,25 @@ void dgn::SettingsHandler::CreateDefault()
 	iniFile.generate(iniStruct, true);
 }
 
-void dgn::SettingsHandler::ReadSettings()
+void dgn::Settings::ReadSettings()
 {
-	mINI::INIFile file(SettingsHandler::s_SettingsPath);
+	mINI::INIFile file(s_SettingsPath);
 
-	file.read(SettingsHandler::s_Structure);
+	file.read(s_Structure);
 }
 
-bool dgn::SettingsHandler::ExistsSettings()
+bool dgn::Settings::ExistsSettings()
 {
 	return std::filesystem::exists(s_SettingsPath);
 }
 
-// Static properties:
-const std::string dgn::SettingsHandler::s_SettingsPath = "settings.ini";
+size_t dgn::Settings::CountFiles()
+{
+	auto dirIter = std::filesystem::directory_iterator(Settings::Get("results", "directory"));
 
-mINI::INIStructure dgn::SettingsHandler::s_Structure = mINI::INIStructure();
+	auto fileCount = std::count_if(begin(dirIter), end(dirIter),
+		[](auto& entry) { return entry.is_regular_file(); }
+	);
+
+	return fileCount;
+}

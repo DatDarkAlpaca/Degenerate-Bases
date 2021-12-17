@@ -11,8 +11,15 @@ namespace dgn
 			for (auto& base : baseSizes)
 				base.second = 0;
 
+			permutationTime = 0;
+			writeFastaTime = 0;
+
 			iterations = 0;
 			outcomes = 0;
+
+			invalidSequence = false;
+			anyDegenerate = false;
+			sequence = "";
 		}
 
 	public:
@@ -26,6 +33,7 @@ namespace dgn
 		static inline bool invalidSequence = false;
 		static inline bool anyDegenerate = false;
 
+		static inline std::atomic<long long> writeFastaTime, permutationTime;
 		static inline std::atomic<uint32_t> iterations{ 0 }, outcomes{ 0 };
 	};
 }

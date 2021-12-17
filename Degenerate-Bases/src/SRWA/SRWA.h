@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "../settings/settings.h"
 
 namespace dgn
 {
@@ -9,15 +10,7 @@ namespace dgn
         SRWA() = delete;
 
     public:
-        static void Configure(char headerCharacter = ';', const std::string& headerTemplate = "base")
-        {
-            s_HeaderCharacter = headerCharacter;
-            s_HeaderTemplate = headerTemplate;
-        }
-
-        static void SetEnabled(bool enabled) { s_Enabled = enabled; }
-
-        static void Open(std::string&& filepath, std::ios_base::openmode mode = std::ios_base::app)
+        static void Open(const std::string& filepath, std::ios_base::openmode mode = std::ios_base::app)
         {
             if(!s_File.is_open())
                 s_File.open(filepath, mode);
@@ -29,34 +22,67 @@ namespace dgn
                 return;
 
             s_File.close();
-            s_Index = 0;
+            index = 0;
+        }
+
+        static void CreateDefault()
+        {
+            using namespace std::filesystem;
+
+            auto directory = Settings::Get("results", "directory");
+            if (!is_directory(directory))
+                create_directory(directory);
         }
 
     public:
         static void Write(const std::string& data)
         {
-            if (!s_File.is_open() || !s_Enabled)
+            if (!s_File.is_open())
                 return;
 
-            const std::string header = s_HeaderCharacter + s_HeaderTemplate;
+            const std::string headerCharacter = Settings::Get("fasta", "header_character");
+            const std::string headerTemplate = Settings::Get("fasta", "header_template");
+
+            const std::string header = headerCharacter + headerTemplate;
 
             std::lock_guard<std::mutex> lock(m_WriteMutex);
 
-            s_File << header << std::to_string(s_Index) << '\n';
-            s_File << '\n' << data << '\n';
+            s_File << header << std::to_string(index) << '\n';
+            s_File << data << '\n';
 
-            ++s_Index;
+            ++index;
+        }
+
+        static std::vector<std::string> Read(const std::string& filepath)
+        {
+            Open(filepath, std::ios_base::in);
+
+            std::vector<std::string> results;
+
+            bool firstLine = true;
+            char headerCharacter;
+            for (std::string line; std::getline(s_File, line); )
+            {
+                if (firstLine)
+                {
+                    headerCharacter = line[0];
+                    firstLine = false;
+                }
+
+                if (line[0] != headerCharacter)
+                    results.push_back(line);
+            }
+
+            Close();
+
+            return results;
         }
 
     private:
-        static inline std::string s_HeaderTemplate = "Result";
-        static inline char s_HeaderCharacter = '>';
-
+        static inline std::mutex m_WriteMutex;
         static inline std::fstream s_File;
 
-        static inline bool s_Enabled = true;
-        static inline size_t s_Index = 0;
-
-        static inline std::mutex m_WriteMutex;
+    public:
+        static inline size_t index = 0;
     };
 }

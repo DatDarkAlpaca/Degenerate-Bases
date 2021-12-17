@@ -1,19 +1,20 @@
 #include "pch.h"
-#include "data.h"
 #include "main_frame.h"
-#include "../SRWA/SRWA.h"
-#include "../input/input.h"
-#include "../permutator/permutator.h"
 
-dgn::MainFrame::MainFrame()
-	: wxFrame(nullptr, wxID_ANY, "Degenerate Bases v5.0", wxDefaultPosition, wxSize(600, 400))
+dgn::DegenerateBaseFrame::DegenerateBaseFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style)
+	: MainFrame(parent, id, title, pos, size, style)
 {
+	SetLabel(title);
+
 	PrepareMenu();
 
-	PrepareInput();
+	CreateVirtualList();
+	ModifyGenerateButton();
+
+	Layout();
 }
 
-void dgn::MainFrame::PrepareMenu()
+void dgn::DegenerateBaseFrame::PrepareMenu()
 {
 	wxMenu* menuFile = new wxMenu;
 
@@ -39,60 +40,115 @@ void dgn::MainFrame::PrepareMenu()
 	SetMenuBar(menuBar);
 }
 
-void dgn::MainFrame::PrepareInput()
+void dgn::DegenerateBaseFrame::CreateVirtualList()
 {
-	// Instances:
-	wxSplitterWindow* splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
-													  wxSP_BORDER | wxSP_LIVE_UPDATE);
-	wxPanel* inputPanel = new wxPanel(splitter);
-	wxPanel* resultsPanel = new wxPanel(splitter);
+	wxBoxSizer* listSizer = new wxBoxSizer(wxHORIZONTAL);
+	listPanel->SetSizer(listSizer);
+
+	m_ResultListCtrl = new VirtualList(listPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
+									   wxBORDER_DEFAULT | wxLC_HRULES | wxLC_REPORT | 
+									   wxLC_VIRTUAL | wxLC_VRULES);
 	
-	// Panel Color:
-	inputPanel->SetBackgroundColour(wxColor(200, 100, 100));
-	resultsPanel->SetBackgroundColour(wxColor(100, 200, 100));
-
-	// Sizer:
-	wxBoxSizer* inputSizer = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* resultsSizer = new wxBoxSizer(wxVERTICAL);
-
-	// TextControl & Generate Button:
-	m_Input = new wxTextCtrl(inputPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
-	wxButton* generateButton = new wxButton(inputPanel, ID_INPUT_BTN, "Generate");
-
-	// List:
-	m_ResultsList = new VirtualList(resultsPanel, wxID_ANY, wxDefaultPosition, wxSize(0, 800));
-
-	// Input Sizer:
-	inputSizer->Add(m_Input, 5, 0, wxALIGN_CENTRE_HORIZONTAL);
-	inputSizer->Add(generateButton, 1, 0, wxALIGN_CENTRE_HORIZONTAL);
-	inputPanel->SetSizer(inputSizer);
-
-	// Results Sizer:
-	resultsSizer->Add(m_ResultsList, 0, wxEXPAND, 0);
-	resultsPanel->SetSizer(resultsSizer);
-
-	// Binding:
-	Bind(wxEVT_BUTTON, &MainFrame::ButtonGenerate, this, ID_INPUT_BTN);
-
-	// Splitting:
-	splitter->SetMinimumPaneSize(200);
-	splitter->SplitVertically(inputPanel, resultsPanel);
+	listSizer->Add(m_ResultListCtrl, 1, wxALL | wxEXPAND, 1);
 }
 
-void dgn::MainFrame::ButtonGenerate(wxCommandEvent& event)
+void dgn::DegenerateBaseFrame::DisplayInformation()
 {
-	// Clear the list
-	// Todo: history list.
-	m_ResultsList->Clear();
+	generationResultsTable->ClearAll();
+	generationResultsTable->InsertColumn(0, _("Property"));
+	generationResultsTable->InsertColumn(1, _("Value"));
 
-	Data::sequence = m_Input->GetValue();
+	AddInformation("Writing time", std::to_string(Data::writeFastaTime) + "ms");
 
+	AddInformation("Permutation time", std::to_string(Data::permutationTime) + "ms");
+
+	AddInformation("Iterations:", std::to_string(Data::iterations));
+
+	AddInformation("Outcomes:", std::to_string(Data::outcomes));
+
+	AddInformation("Sequence's length:", std::to_string(Data::sequence.size()));
+
+	// Todo: unmatched bases error.
+}
+
+void dgn::DegenerateBaseFrame::ModifyGenerateButton()
+{
+	generateButton->SetId(ID_INPUT_BTN);
+	Bind(wxEVT_BUTTON, &DegenerateBaseFrame::ButtonGenerate, this, ID_INPUT_BTN);
+}
+
+void dgn::DegenerateBaseFrame::AddInformation(std::string&& name, std::string&& value, bool isWarning, bool isError)
+{
+	long index = generationResultsTable->InsertItem(0, name);
+	generationResultsTable->SetItem(index, 1, value);
+
+	// Todo: change these colors.
+	if (isWarning)
+		generationResultsTable->SetItemBackgroundColour(index, wxColour(210, 51, 51));
+
+	if(isError)
+		generationResultsTable->SetItemBackgroundColour(index, wxColour(210, 210, 51));
+}
+
+void dgn::DegenerateBaseFrame::SetInformation(std::string&& name, std::string&& value, bool isWarning, bool isError)
+{
+	generationResultsTable->ClearAll();
+	generationResultsTable->InsertColumn(0, _("Property"));
+	generationResultsTable->InsertColumn(1, _("Value"));
+
+	long index = generationResultsTable->InsertItem(0, name);
+	generationResultsTable->SetItem(index, 1, value);
+
+	// Todo: change these colors.
+	if (isWarning)
+		generationResultsTable->SetItemBackgroundColour(index, wxColour(210, 51, 51));
+
+	if (isError)
+		generationResultsTable->SetItemBackgroundColour(index, wxColour(210, 210, 51));
+}
+
+void dgn::DegenerateBaseFrame::ButtonGenerate(wxCommandEvent& event)
+{
+	Data::Clear();
+	m_ResultListCtrl->Clear();
+
+	SRWA::CreateDefault();
+
+	// Sequence:
+	Data::sequence = inputCtrl->GetValue();
 	InputHandler::SanitizeInput();
 
-	// SRWA:
-	SRWA::Open("result");
-	
+	if (Data::invalidSequence)
+	{
+		SetInformation("Invalid Sequence", "The input sequence is invalid.", true, false);
+		return;
+	}
+
+	// SBI:
+	if (!Data::anyDegenerate)
+		return Permutator::SimpleBaseInsertion();
+
+	// Fasta:
+	auto dir = Settings::Get("results", "directory")
+		+ Settings::Get("results", "prefix")
+		+ std::to_string(Settings::CountFiles()) + "."
+		+ Settings::Get("results", "format");
+
+	SRWA::Open(dir);
+
+	Permutator::Preparation();
+
+	high_resolution_clock::time_point begin = high_resolution_clock::now();
+	Permutator::LazyPermutation();
+	high_resolution_clock::time_point end = high_resolution_clock::now();
+
 	SRWA::Close();
 
-	Data::Clear();
+	// Displaying:
+	auto results = SRWA::Read(dir);
+	m_ResultListCtrl->SetItems(results);
+
+	Data::permutationTime = duration_cast<nanoseconds>(end - begin).count() / 1000000;
+
+	DisplayInformation();
 }

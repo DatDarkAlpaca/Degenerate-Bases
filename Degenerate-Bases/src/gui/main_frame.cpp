@@ -209,6 +209,9 @@ void dgn::DegenerateBaseFrame::ButtonGenerate(wxCommandEvent& event)
 
 	SRWA::Close();
 
+	// Todo: Would you like to display?
+	wxMessageBox("The sequence has been generated onto a file. Preparing display.", "Display sequences");
+
 	// Displaying:
 	FillResults(dir);
 

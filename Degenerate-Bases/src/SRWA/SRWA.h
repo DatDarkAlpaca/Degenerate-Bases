@@ -12,16 +12,16 @@ namespace dgn
     public:
         static void Open(const std::string& filepath, std::ios_base::openmode mode = std::ios_base::app)
         {
-            if(!s_File.is_open())
-                s_File.open(filepath, mode);
+            if(!file.is_open())
+                file.open(filepath, mode);
         }
 
         static void Close()
         {
-            if (!s_File.is_open())
+            if (!file.is_open())
                 return;
 
-            s_File.close();
+            file.close();
             index = 0;
         }
 
@@ -37,7 +37,7 @@ namespace dgn
     public:
         static void Write(const std::string& data)
         {
-            if (!s_File.is_open())
+            if (!file.is_open())
                 return;
 
             const std::string headerCharacter = Settings::Get("fasta", "header_character");
@@ -47,8 +47,8 @@ namespace dgn
 
             std::lock_guard<std::mutex> lock(m_WriteMutex);
 
-            s_File << header << std::to_string(index) << '\n';
-            s_File << data << '\n';
+            file << header << std::to_string(index) << '\n';
+            file << data << '\n';
 
             ++index;
         }
@@ -58,10 +58,10 @@ namespace dgn
             Open(filepath, std::ios_base::in);
 
             std::vector<std::string> results;
-
+            
             bool firstLine = true;
             char headerCharacter;
-            for (std::string line; std::getline(s_File, line); )
+            for (std::string line; std::getline(file, line); )
             {
                 if (firstLine)
                 {
@@ -80,9 +80,9 @@ namespace dgn
 
     private:
         static inline std::mutex m_WriteMutex;
-        static inline std::fstream s_File;
-
+      
     public:
+        static inline std::fstream file;
         static inline size_t index = 0;
     };
 }

@@ -13,7 +13,6 @@ dgn::DegenerateBaseFrame::DegenerateBaseFrame(wxWindow* parent, wxWindowID id, c
 
 	Layout();
 
-	// Prepare another function:
 	Bind(wxEVT_SIZE, &DegenerateBaseFrame::FixListCtrl, this, wxID_ANY);
 	Bind(wxEVT_SPLITTER_SASH_POS_CHANGED, &DegenerateBaseFrame::FixListCtrlSash, this, wxID_ANY);
 }
@@ -86,6 +85,27 @@ void dgn::DegenerateBaseFrame::ModifyGenerateButton()
 {
 	generateButton->SetId(ID_INPUT_BTN);
 	Bind(wxEVT_BUTTON, &DegenerateBaseFrame::ButtonGenerate, this, ID_INPUT_BTN);
+}
+
+void dgn::DegenerateBaseFrame::FillResults(const std::string& dir)
+{
+	SRWA::Open(dir, std::ios_base::in);
+
+	bool firstLine = true;
+	char headerCharacter;
+	for (std::string line; std::getline(SRWA::file, line); )
+	{
+		if (firstLine)
+		{
+			headerCharacter = line[0];
+			firstLine = false;
+		}
+
+		if (line[0] != headerCharacter)
+			m_ResultListCtrl->AddItem(line);
+	}
+
+	SRWA::Close();
 }
 
 void dgn::DegenerateBaseFrame::FixListCtrl(wxSizeEvent& event)
@@ -190,8 +210,7 @@ void dgn::DegenerateBaseFrame::ButtonGenerate(wxCommandEvent& event)
 	SRWA::Close();
 
 	// Displaying:
-	auto results = SRWA::Read(dir);
-	m_ResultListCtrl->SetItems(results);
+	FillResults(dir);
 
 	Data::permutationTime = duration_cast<nanoseconds>(end - begin).count() / 1000000;
 

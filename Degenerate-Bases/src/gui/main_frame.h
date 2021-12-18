@@ -30,6 +30,8 @@ namespace dgn
 
 		void ModifyGenerateButton();
 
+		void FillResults(const std::string& dir);
+
 		void FixListCtrl(wxSizeEvent& event);
 
 		void FixListCtrlSash(wxSplitterEvent& event);

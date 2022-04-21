@@ -86,13 +86,13 @@ std::vector<std::string> dgn::SRWA::Read(const std::string& filepath)
 
 			else if (lineCopy.find("PERMUTATION") != std::string::npos)
 			{
-				std::regex_replace(line, std::regex("\\ms"), "");
+				line = std::regex_replace(line, std::regex("\\ms"), "");
 				Data::permutationTime = std::stoi(line);
 			}
 
 			else if (lineCopy.find("WRITING") != std::string::npos)
 			{
-				std::regex_replace(line, std::regex("\\ms"), "");
+				line = std::regex_replace(line, std::regex("\\ms"), "");
 				Data::writeFastaTime = std::stoi(line);
 			}
 		}

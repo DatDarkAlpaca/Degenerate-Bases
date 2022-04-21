@@ -17,6 +17,8 @@ namespace dgn
 
         void Load();
 
+        void OpenSettings();
+
     private:
         void ExecuteSBI();
 

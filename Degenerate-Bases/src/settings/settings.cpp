@@ -13,12 +13,19 @@ const std::string dgn::Settings::Get(std::string&& section, std::string&& key)
 	return std::string();
 }
 
+const void dgn::Settings::Set(std::string&& section, std::string&& key, std::string&& value)
+{
+	s_Structure[section][key] = value;
+	s_IniFile.write(s_Structure);
+}
+
 void dgn::Settings::CreateDefault()
 {
+	s_IniFile = mINI::INIFile(s_SettingsPath);
+
 	if (ExistsSettings())
 		return;
 
-	mINI::INIFile iniFile(s_SettingsPath);
 	mINI::INIStructure iniStruct;
 
 	iniStruct["fasta"].set({
@@ -47,7 +54,7 @@ void dgn::Settings::CreateDefault()
 		{ "write_debug", "false" },
 		});
 
-	iniFile.generate(iniStruct, true);
+	s_IniFile.generate(iniStruct, true);
 }
 
 void dgn::Settings::ReadSettings()

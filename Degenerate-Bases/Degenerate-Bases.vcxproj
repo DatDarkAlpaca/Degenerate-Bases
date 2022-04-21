@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\gui\SettingsDialog.cpp" />
     <ClCompile Include="src\input\input.cpp" />
     <ClCompile Include="src\permutator\permutator.cpp" />
     <ClCompile Include="src\gui\MainWindow.cpp" />
@@ -27,15 +28,17 @@
     <ClCompile Include="src\srwa\srwa.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="res\Main Window\DegenerateBases.qrc" />
+    <QtRcc Include="res\MainWindow\DegenerateBases.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="res\Main Window\DegenerateBases.ui" />
+    <QtUic Include="res\MainWindow\DegenerateBases.ui" />
+    <QtUic Include="res\SettingsDialog\SettingsDialog.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\gui\MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="src\gui\SettingsDialog.h" />
     <ClInclude Include="src\permutator\permutator.h" />
     <ClInclude Include="src\data.h" />
     <ClInclude Include="src\input\input.h" />

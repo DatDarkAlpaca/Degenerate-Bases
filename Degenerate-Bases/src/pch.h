@@ -3,6 +3,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <qfiledialog.h>
+#include <qaction.h>
 
 #include <ini.h>
 

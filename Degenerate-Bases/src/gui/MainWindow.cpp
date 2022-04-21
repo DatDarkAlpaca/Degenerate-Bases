@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "MainWindow.h"
+#include "SettingsDialog.h"
+
 #include "data.h"
 #include "srwa/srwa.h"
 #include "input/input.h"
@@ -13,6 +15,7 @@ dgn::MainWindow::MainWindow(QWidget *parent)
     
     connect(ui.executeButton, &QPushButton::released, this, &MainWindow::Execute);
     connect(ui.loadButton, &QPushButton::released, this, &MainWindow::Load);
+    connect(ui.actionSettings, &QAction::triggered, this, &MainWindow::OpenSettings);
 }
 
 void dgn::MainWindow::Execute()
@@ -73,6 +76,17 @@ void dgn::MainWindow::Load()
         DisplayInformation();
 
         ui.sequenceEdit->setText("");
+    }
+}
+
+void dgn::MainWindow::OpenSettings()
+{
+    SettingsDialog settingsDialog;
+
+    int result = settingsDialog.exec();
+    if (result == QMessageBox::Ok || result == QMessageBox::Apply)
+    {
+        settingsDialog.ApplySettings();
     }
 }
 

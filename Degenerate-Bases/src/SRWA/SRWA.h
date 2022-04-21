@@ -1,86 +1,30 @@
 #pragma once
 #include "pch.h"
-#include "../settings/settings.h"
 
 namespace dgn
 {
     class SRWA
     {
     public:
+        SRWA& operator=(const SRWA&) = delete;
+        SRWA(const SRWA&) = delete;
         SRWA() = delete;
 
     public:
-        static void Open(const std::string& filepath, std::ios_base::openmode mode = std::ios_base::app)
-        {
-            if(!file.is_open())
-                file.open(filepath, mode);
-        }
+        static void Open(const std::string& filepath, std::ios_base::openmode mode = std::ios_base::app);
 
-        static void Close()
-        {
-            if (!file.is_open())
-                return;
+        static void Close();
 
-            file.close();
-            index = 0;
-        }
-
-        static void CreateDefault()
-        {
-            using namespace std::filesystem;
-
-            auto directory = Settings::Get("results", "directory");
-            if (!is_directory(directory))
-                create_directory(directory);
-        }
+        static void CreateDefault();
 
     public:
-        static void Write(const std::string& data)
-        {
-            if (!file.is_open())
-                return;
+        static void Write(const std::string& data);
 
-            const std::string headerCharacter = Settings::Get("fasta", "header_character");
-            const std::string headerTemplate = Settings::Get("fasta", "header_template");
-
-            const std::string header = headerCharacter + headerTemplate;
-
-            std::lock_guard<std::mutex> lock(m_WriteMutex);
-
-            file << header << std::to_string(index) << '\n';
-            file << data << '\n';
-
-            ++index;
-        }
-
-        static std::vector<std::string> Read(const std::string& filepath)
-        {
-            Open(filepath, std::ios_base::in);
-
-            std::vector<std::string> results;
-            
-            bool firstLine = true;
-            char headerCharacter;
-            for (std::string line; std::getline(file, line); )
-            {
-                if (firstLine)
-                {
-                    headerCharacter = line[0];
-                    firstLine = false;
-                }
-
-                if (line[0] != headerCharacter)
-                    results.push_back(line);
-            }
-
-            Close();
-
-            return results;
-        }
+        static std::vector<std::string> Read(const std::string& filepath);
 
     private:
         static inline std::mutex m_WriteMutex;
-      
+
     public:
         static inline std::fstream file;
         static inline size_t index = 0;

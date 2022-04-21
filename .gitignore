@@ -16,17 +16,17 @@ __pycache__/
 # Results:
 results/
 
+# Binaries:
+[Bb]in
+[Ii]ntermediate
+x64
+x86
+
 # Visual Studio:
-bin
-intermediate
 .vs
 
 # Settings:
 *.ini
-
-# wxWidgets:
-**/wxWidgets/include
-**/wxWidgets/lib
 
 # Precompiled Headers
 *.gch
@@ -36,10 +36,6 @@ intermediate
 *.so
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
 
 # Compiled Static libraries
 *.lai

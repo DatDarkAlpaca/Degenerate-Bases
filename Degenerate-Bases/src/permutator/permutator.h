@@ -1,23 +1,21 @@
 #pragma once
-#include "../data.h"
 
 namespace dgn
 {
 	class Permutator
 	{
 	private:
-		typedef uint_least32_t least;
-		typedef const std::vector<std::function<void(const std::string&)>> writters;
+		using least = uint_least32_t;
 
 	public:
-		static void LazyPermutation(least min = 0, least max = Data::cartesianSize);
+		static void LazyPermutation();
 
-		static void SimpleBaseInsertion();
-
-		static void Preparation();
+		static void SimpleBaseInsertion(const std::string& filepath);
 
 	private:
-		static unsigned char LazyCartesian(least j, least i);
+		static void Preparation();
+
+		static unsigned char LazyCartesian(least i, least j);
 
 	private:
 		static inline std::vector<std::vector<unsigned char>> s_Sets = {};

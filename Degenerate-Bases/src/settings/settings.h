@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <ini.h>
 
 namespace dgn
 {
@@ -18,7 +20,7 @@ namespace dgn
 		static bool ExistsSettings();
 
 	private:
-		static inline const std::string s_SettingsPath = "./settings.ini";
+		static inline const std::string s_SettingsPath = "res/settings.ini";
 		static inline mINI::INIStructure s_Structure;
 	};
 }

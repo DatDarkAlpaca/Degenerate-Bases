@@ -1,9 +1,8 @@
 #pragma once
-#include "pch.h"
 
 namespace dgn
 {
-	class InputHandler
+	class Input
 	{
 	public:
 		static void SanitizeInput();

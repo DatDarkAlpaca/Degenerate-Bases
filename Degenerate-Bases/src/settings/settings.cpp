@@ -24,28 +24,28 @@ void dgn::Settings::CreateDefault()
 	iniStruct["fasta"].set({
 		{ "header_character ", ">" },
 		{ "header_template", "seq" }
-	});
+		});
 
 	iniStruct["results"].set({
 		{ "prefix ", "Result_" },
 		{ "format", "fas" },
 		{ "directory", "./results/" }
-	});
+		});
 
 	iniStruct["Logging"].set({
 		{ "enable ", "true" },
 		{ "prefix", "Log_" },
 		{ "directory", "./logs/" }
-	});
+		});
 
 	iniStruct["chunks"].set({
 		{ "chunk_size ", "1024" }
-	});
+		});
 
 	iniStruct["debug"].set({
 		{ "enable", "false" },
 		{ "write_debug", "false" },
-	});
+		});
 
 	iniFile.generate(iniStruct, true);
 }
@@ -57,11 +57,6 @@ void dgn::Settings::ReadSettings()
 	file.read(s_Structure);
 }
 
-bool dgn::Settings::ExistsSettings()
-{
-	return std::filesystem::exists(s_SettingsPath);
-}
-
 size_t dgn::Settings::CountFiles()
 {
 	auto dirIter = std::filesystem::directory_iterator(Settings::Get("results", "directory"));
@@ -71,4 +66,9 @@ size_t dgn::Settings::CountFiles()
 	);
 
 	return fileCount;
+}
+
+bool dgn::Settings::ExistsSettings()
+{
+	return std::filesystem::exists(s_SettingsPath);
 }

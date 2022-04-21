@@ -1,4 +1,16 @@
 #include "pch.h"
-#include "gui/app.h"
+#include "gui/MainWindow.h"
+#include "settings/settings.h"
 
-wxIMPLEMENT_APP(dgn::App);
+int main(int argc, char *argv[])
+{
+    dgn::Settings::CreateDefault();
+    dgn::Settings::ReadSettings();
+
+    QApplication a(argc, argv);
+
+    dgn::MainWindow w;
+    w.show();
+
+    return a.exec();
+}

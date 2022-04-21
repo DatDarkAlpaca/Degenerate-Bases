@@ -1,20 +1,62 @@
 #include "pch.h"
+#include "data.h"
+#include "srwa/srwa.h"
 #include "permutator.h"
-#include "../data.h"
-#include "../SRWA/SRWA.h"
+#include "settings/settings.h"
 
-namespace
+static void WriteTimed(const std::string& data)
 {
-	inline void WriteTimed(const std::string& data)
-	{
-		using namespace dgn;
+	using namespace dgn;
 
-		high_resolution_clock::time_point begin = high_resolution_clock::now();
-		SRWA::Write(data);
-		high_resolution_clock::time_point end = high_resolution_clock::now();
-		
-		Data::writeFastaTime += duration_cast<nanoseconds>(end - begin).count() / 1000000;
+	high_resolution_clock::time_point begin = high_resolution_clock::now();
+	SRWA::Write(data);
+	high_resolution_clock::time_point end = high_resolution_clock::now();
+
+	Data::writeFastaTime += duration_cast<nanoseconds>(end - begin).count() / 1'000'000;
+}
+
+void dgn::Permutator::LazyPermutation()
+{
+	Preparation();
+
+	std::string result;
+	result.reserve(Data::sequence.size());
+
+	for (size_t i = 0; i < Data::cartesianSize; ++i)
+	{
+		for (size_t j = 0; j < Data::sequence.size(); ++j)
+		{
+			auto cartesian = LazyCartesian(i, j);
+
+			for (auto& [baseName, base] : Data::validBases)
+			{
+				if (Data::sequence[j] == baseName)
+				{
+					result += base.basePossibilities[cartesian];
+					break;
+				}
+			}
+
+			Data::iterations++;
+		}
+
+		WriteTimed(result);
+
+		result.clear();
+
+		Data::outcomes++;
 	}
+}
+
+void dgn::Permutator::SimpleBaseInsertion(const std::string& filepath)
+{
+	SRWA::Open(filepath);
+
+	SRWA::Write(Data::sequence);
+
+	SRWA::Close();
+
+	Data::outcomes = 1;
 }
 
 void dgn::Permutator::Preparation()
@@ -26,24 +68,21 @@ void dgn::Permutator::Preparation()
 
 	for (size_t i = 0; i < inputSize; i++)
 	{
-		for (auto& unit : Data::units)
+		for (const auto& [baseName, base] : Data::validBases)
 		{
-			if (Data::sequence[i] == unit.first)
+			if (Data::sequence[i] == baseName)
 			{
-				switch (unit.second.size())
+				switch (base.baseSize)
 				{
 				case 1:
 					s_Sets.push_back({ 0 });
 					break;
-
 				case 2:
 					s_Sets.push_back({ 0, 1 });
 					break;
-
 				case 3:
 					s_Sets.push_back({ 0, 1, 2 });
 					break;
-
 				case 4:
 					s_Sets.push_back({ 0, 1, 2, 3 });
 					break;
@@ -69,71 +108,19 @@ void dgn::Permutator::Preparation()
 	}
 }
 
-unsigned char dgn::Permutator::LazyCartesian(least j, least i)
+unsigned char dgn::Permutator::LazyCartesian(least i, least j)
 {
-	if ((size_t)j >= Data::cartesianSize)
-	{
-		// Todo: error.
+	if ((size_t)i >= Data::cartesianSize)
 		return 0;
-	}
 
 	std::vector<unsigned char> combinations;
 	combinations.reserve(Data::sequence.size());
 
 	for (size_t r = 0; r < s_Sets.size(); r++)
 	{
-		unsigned int a = int(floor(j / s_Divisions[r])) % s_Moduli[r];
+		unsigned int a = int(floor(i / s_Divisions[r])) % s_Moduli[r];
 		combinations.push_back(s_Sets[r][a]);
 	}
 
-	return combinations[i];
-}
-
-void dgn::Permutator::SimpleBaseInsertion()
-{
-	auto dir = Settings::Get("results", "directory")
-			 + Settings::Get("results", "prefix")
-			 + std::to_string(Settings::CountFiles()) 
-			 + "."
-			 + Settings::Get("results", "format");
-			 
-	SRWA::Open(dir);
-
-	SRWA::Write(Data::sequence);
-	
-	SRWA::Close();
-
-	Data::outcomes = 1;
-}
-
-void dgn::Permutator::LazyPermutation(least min, least max)
-{
-	// Reserving the result string:
-	std::string result;
-	result.reserve(Data::sequence.size());
-
-	for (size_t j = min; j < max; ++j)
-	{
-		for (size_t i = 0; i < Data::sequence.size(); ++i)
-		{
-			auto cartesian = LazyCartesian(j, i);
-
-			for (auto& unit : Data::units)
-			{
-				if (Data::sequence[i] == unit.first)
-				{
-					result += unit.second[cartesian];
-					break;
-				}
-			}
-
-			Data::iterations++;
-		}
-
-		WriteTimed(result);
-
-		result.clear();
-
-		Data::outcomes++;
-	}
+	return combinations[j];
 }

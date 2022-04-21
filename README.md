@@ -6,19 +6,19 @@ This project was developed to analyze oligonucleotide sequences containing
 degenerate bases and generate a file with all possible outcomes with non-degenerate
 bases considering the conversion of degenerate bases into conventional bases.
 
-If you're looking for the NoGUI version ( 4.6f ), visit the [legacy repository](https://github.com/DatDarkAlpaca/Degenerate-Bases-NoGUI).
+Currently, this project only supports Windows builds, so if you're looking for the version without a graphical user interface, and consequently, "cross-platform", visit the [legacy repository](https://github.com/DatDarkAlpaca/Degenerate-Bases-NoGUI).
 
-## Getting Started
 
-These instructions are aimed towards getting you a copy of the project up and running on your local
-machine for development and testing purposes.
+# Getting Started
 
-### Prerequisites
+These instructions are aimed towards getting you a copy of the project up and running on your local machine for development and testing purposes.
 
-In order to build this project, it is recommended to open the 
-[Visual Studio](https://visualstudio.microsoft.com/pt-br/downloads/) solution,
-but shortly the option to build in Linux or OSX environments using CMake will be available.
-You can also download the project directly from [Releases](https://github.com/DatDarkAlpaca/Degenerate-Bases-NoGUI/releases).
+## Prerequisites
+
+In order to build this project, you'll need to download the following dependencies and IDEs:
+
+- [Qt](https://www.qt.io/download-qt-installer)
+- [Visual Studio](https://visualstudio.microsoft.com/pt-br/downloads/)
 
 ### Installing
 
@@ -27,24 +27,22 @@ It is fairly easy to install the project, all you need to do is to
 GitHub. There is also the option to [download](https://github.com/DatDarkAlpaca/Degenerate-Bases-NoGUI/archive/refs/heads/main.zip)
 a copy of the repository.
 
-If you wish to clone the repository using the terminal, you'll need to run:
+If you want to clone the repository using the terminal instead, use:
 
-```bash
-git clone https://github.com/DatDarkAlpaca/Degenerate-Bases-NoGUI/
-```
+    git clone https://github.com/DatDarkAlpaca/Degenerate-Bases-NoGUI/
+
+
+## Visual Studio Setup
+
+Once everything is downloaded, open the solution `Degenerate-Bases.sln`, click on `Extensions` and `Manage Extensions`. A dropdown list will show up. You'll need to install the [Qt Visual Studio Tools](https://marketplace.visualstudio.com/items?itemName=TheQtCompany.QtVisualStudioTools-19123) extension. You may need to restart Visual Studio.
 
 ## Building the project
 
-To build the project using Visual Studio, **after correctly
-[installing the project](README.md#Installing)**, you'll need to build/download [wxWidget](https://www.wxwidgets.org),
-the GUI library used in this project. After that, create the folder `wxWidgets` under `src/vendor`. Inside this folder,
-add the `include` and `lib` folders.
+To build the project, click `Build` then `Build Solution` on Visual Studio. Alternatively, you can use the shortcut `Ctrl+Shift+B`.
+The executable files are generated under `bin/Configuration/Platform`, and the intermediate files are generated under `intermediate/Configuration/Platform`.
 
-Finally, click `Build` then `Build All` on Visual Studio. Alternatively, you can use the shortcut `Ctrl+Shift+B`.
-The executable files are generated under `bin/Configuration/Platform`.
-
-Once you open the application, it'll generate a folder called `results` and a file called `settings.ini` in the current directory.
-They are recreated if you delete them.
+Once you run the application, a folder called `results` and a file called `settings.ini` will be generated in the current directory.
+They will be recreated if you delete them.
 
 ## Configuring the project
 

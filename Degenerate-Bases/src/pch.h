@@ -1,24 +1,19 @@
 #pragma once
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/qmessagebox.h>
 
-#include <wx/wxprec.h>
-
-#include <wx/textctrl.h>
-#include <wx/splitter.h>
-#include <wx/listctrl.h>
-
-#include <mINI/ini.h>
+#include <ini.h>
 
 #include <unordered_map>
+#include <type_traits>
+#include <functional>
 #include <filesystem>
 #include <iostream>
+#include <fstream>
 #include <string>
-#include <chrono>
-
-#include <type_traits>
 #include <atomic>
-#include <thread>
+#include <chrono>
 #include <mutex>
-
-#include <functional>
 
 using namespace std::chrono;

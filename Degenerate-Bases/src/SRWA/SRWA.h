@@ -18,6 +18,8 @@ namespace dgn
         static void CreateDefault();
 
     public:
+        static void WriteHeader(const std::string& sequence, size_t iterations, size_t outcomes, long long permutationTime, long long writeTime);
+
         static void Write(const std::string& data);
 
         static std::vector<std::string> Read(const std::string& filepath);

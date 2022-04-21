@@ -12,6 +12,7 @@ dgn::MainWindow::MainWindow(QWidget *parent)
     ui.setupUi(this);
     
     connect(ui.executeButton, &QPushButton::released, this, &MainWindow::Execute);
+    connect(ui.loadButton, &QPushButton::released, this, &MainWindow::Load);
 }
 
 void dgn::MainWindow::Execute()
@@ -55,6 +56,26 @@ void dgn::MainWindow::Execute()
     ExecutePermutation();
 }
 
+void dgn::MainWindow::Load()
+{
+    Data::Clear();
+    SetStatus("Previous data cleared successfully.");
+
+    SRWA::CreateDefault();
+
+    auto filepath = QFileDialog::getOpenFileName(this, "Open Fasta", "current path", "Fasta Files (*.fas *.fasta)").toStdString();
+    auto results = SRWA::Read(filepath);
+    
+    if (!results.empty())
+    {
+        AppendResultsToTable(results);
+
+        DisplayInformation();
+
+        ui.sequenceEdit->setText("");
+    }
+}
+
 void dgn::MainWindow::ExecuteSBI()
 {
     auto dir = Settings::Get("results", "directory")
@@ -64,7 +85,9 @@ void dgn::MainWindow::ExecuteSBI()
         + Settings::Get("results", "format");
 
     SetStatus("SBI algorithm initiated.");
+    
     Permutator::SimpleBaseInsertion(dir);
+    SRWA::WriteHeader(Data::sequence, Data::iterations, Data::outcomes, Data::permutationTime, Data::writeFastaTime);
 
     auto results = SRWA::Read(dir);
     AppendResultsToTable(results);
@@ -83,6 +106,7 @@ void dgn::MainWindow::ExecutePermutation()
     // Permutation:
     SRWA::Open(dir);
     ExecuteTimedPermutation();
+    SRWA::WriteHeader(Data::sequence, Data::iterations, Data::outcomes, Data::permutationTime, Data::writeFastaTime);
     SRWA::Close();
 
     // Show Results:
@@ -142,7 +166,7 @@ void dgn::MainWindow::DisplayInformation()
 
     table->setItem(0, 0, new QTableWidgetItem(Data::sequence.c_str()));
 
-    auto length = std::to_string(Data::sequence.length());
+    auto length = std::to_string(Data::sequence.length() - 1);
     table->setItem(1, 0, new QTableWidgetItem(length.c_str()));
 
     auto outcomes = std::to_string(Data::outcomes);

@@ -1,7 +1,8 @@
 #pragma once
+#include <QtWidgets/qmessagebox.h>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/qmessagebox.h>
+#include <qfiledialog.h>
 
 #include <ini.h>
 
@@ -15,5 +16,6 @@
 #include <atomic>
 #include <chrono>
 #include <mutex>
+#include <regex>
 
 using namespace std::chrono;

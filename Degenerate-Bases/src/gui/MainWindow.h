@@ -15,6 +15,8 @@ namespace dgn
     private slots:
         void Execute();
 
+        void Load();
+
     private:
         void ExecuteSBI();
 

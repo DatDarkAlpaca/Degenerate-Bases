@@ -20,7 +20,9 @@ In order to build this project, you'll need to download the following dependenci
 - [Qt](https://www.qt.io/download-qt-installer)
 - [Visual Studio](https://visualstudio.microsoft.com/pt-br/downloads/)
 
-### Installing
+Make sure to install the MSVC compiler when installing Qt.
+
+## Installing
 
 It is fairly easy to install the project, all you need to do is to 
 [clone](https://github.com/DatDarkAlpaca/Degenerate-Bases-NoGUI/) it from
@@ -35,6 +37,8 @@ If you want to clone the repository using the terminal instead, use:
 ## Visual Studio Setup
 
 Once everything is downloaded, open the solution `Degenerate-Bases.sln`, click on `Extensions` and `Manage Extensions`. A dropdown list will show up. You'll need to install the [Qt Visual Studio Tools](https://marketplace.visualstudio.com/items?itemName=TheQtCompany.QtVisualStudioTools-19123) extension. You may need to restart Visual Studio.
+
+Once installed, open the versions menu under `Extensions` > `Qt VS Tools` > `Qt Version`, then click on the plu sign, and select the `qmake.exe` path from your Qt installation. It can usually be found under `C:\Qt\Version\msvc...\bin\qmake.exe`.
 
 ## Building the project
 

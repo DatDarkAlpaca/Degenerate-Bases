@@ -24,6 +24,11 @@ namespace dgn
 
         void ExecutePermutation();
 
+        void ShowResults();
+
+    signals:
+        void PermutationFinished();
+
     private:
         void RetrieveSequence() const;
 
@@ -36,6 +41,7 @@ namespace dgn
         void SetStatus(const std::string& message);
 
     private:
+        std::string m_Directory;
         Ui::MainWindowClass ui;
     };
 }

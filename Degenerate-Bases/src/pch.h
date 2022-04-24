@@ -4,8 +4,10 @@
 #include <QtWidgets/QMainWindow>
 #include <qfiledialog.h>
 #include <qaction.h>
-
 #include <ini.h>
+
+#include <QtConcurrent>
+#include <qthread.h>
 
 #include <unordered_map>
 #include <type_traits>

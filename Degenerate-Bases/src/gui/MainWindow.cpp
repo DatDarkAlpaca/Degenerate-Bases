@@ -16,6 +16,7 @@ dgn::MainWindow::MainWindow(QWidget *parent)
     connect(ui.executeButton, &QPushButton::released, this, &MainWindow::Execute);
     connect(ui.loadButton, &QPushButton::released, this, &MainWindow::Load);
     connect(ui.actionSettings, &QAction::triggered, this, &MainWindow::OpenSettings);
+    connect(this, &MainWindow::PermutationFinished, this, &MainWindow::ShowResults);
 }
 
 void dgn::MainWindow::Execute()
@@ -56,7 +57,10 @@ void dgn::MainWindow::Execute()
         return ExecuteSBI();
 
     // Regular:
-    ExecutePermutation();
+    QFuture<void> future = QtConcurrent::run([&]() {
+        ExecutePermutation();
+        emit PermutationFinished();
+    });
 }
 
 void dgn::MainWindow::Load()
@@ -85,9 +89,7 @@ void dgn::MainWindow::OpenSettings()
 
     int result = settingsDialog.exec();
     if (result == QMessageBox::Ok || result == QMessageBox::Apply)
-    {
         settingsDialog.ApplySettings();
-    }
 }
 
 void dgn::MainWindow::ExecuteSBI()
@@ -112,19 +114,26 @@ void dgn::MainWindow::ExecuteSBI()
 
 void dgn::MainWindow::ExecutePermutation()
 {
-    auto dir = Settings::Get("results", "directory")
+    m_Directory = Settings::Get("results", "directory")
         + Settings::Get("results", "prefix")
         + std::to_string(Settings::CountFiles()) + "."
         + Settings::Get("results", "format");
 
     // Permutation:
-    SRWA::Open(dir);
+    SRWA::Open(m_Directory);
     ExecuteTimedPermutation();
     SRWA::WriteHeader(Data::sequence, Data::iterations, Data::outcomes, Data::permutationTime, Data::writeFastaTime);
     SRWA::Close();
 
-    // Show Results:
-    auto results = SRWA::Read(dir);
+    DisplayInformation();
+}
+
+void dgn::MainWindow::ShowResults()
+{
+    if (m_Directory.empty())
+        return;
+
+    auto results = SRWA::Read(m_Directory);
     if (results.size() >= Data::warningResultsSize)
     {
         QMessageBox warning;
@@ -138,9 +147,6 @@ void dgn::MainWindow::ExecutePermutation()
     }
     else
         AppendResultsToTable(results);
-
-    DisplayInformation();
-    SetStatus("Operation finished successfully.");
 }
 
 void dgn::MainWindow::RetrieveSequence() const

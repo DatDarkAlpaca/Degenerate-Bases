@@ -8,6 +8,7 @@ bases considering the conversion of degenerate bases into conventional bases.
 
 Currently, this project only supports Windows builds, so if you're looking for the version without a graphical user interface, and consequently, "cross-platform", visit the [legacy repository](https://github.com/DatDarkAlpaca/Degenerate-Bases-NoGUI).
 
+You can find more information about the algorithm itself [here](https://brazilianjournals.com/index.php/BRJD/article/view/40982).
 
 # Getting Started
 
